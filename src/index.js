@@ -1,17 +1,15 @@
 const app = require('express')();
 const axios = require('axios');
-const { response } = require('express');
 
-const URL = "http://www.bom.gov.au/fwo/IDN60801/IDN60801.95765.json";
+const URL = "http://www.bom.gov.au/fwo/IDN60801/IDN60801.95765.jso";
 const FILTER_TEMP = 20;
 
 app.get('/', async (req, res ) => {
     let highTempStations = [];
-
     try {
+        // GET request using Axios
         const response = await axios.get(URL);
         const data = response.data["observations"]["data"];
-
         data.forEach(station => {
             if (station["apparent_t"] > FILTER_TEMP) {
                 highTempStations.push({
@@ -23,13 +21,14 @@ app.get('/', async (req, res ) => {
             }
         });
         highTempStations.sort((a, b) => parseFloat(a.apparent_t) - parseFloat(b.apparent_t));
-        res.json(highTempStations);
+        res.json({ response: highTempStations });
     } catch (error) {
         res.json({
-            status: 503,
-            error: error["message"]
+            errors: [{
+                status: 503,
+                error: error["message"]
+            }]
         });
-        console.log(error);
     }
 });
 
