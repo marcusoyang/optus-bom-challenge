@@ -1,6 +1,14 @@
-# Docker + Node.js
+# Optus BoM Coding Challenge
 
-Dockerize a Node.js app. 
+Web service that returns JSON information regarding Sydney Olympic Park weather forecast information, filtering for 'apparent_t' greater than 20, sorted in ascending order.
 
-Watch the full [Docker video](https://youtu.be/gAkwW2tuIqE) on YouTube or read the [Docker Tutorial](https://fireship.io/lessons/docker-basics-tutorial-nodejs/) on Fireship.io. 
+Each JSON element contains:
+ - name
+ - apparent_t
+ - lat
+ - long
+
+Error message is returned in 'error' key in JSON response if there is any error with BoM.
+
+Application contains a dockerfile.
 
