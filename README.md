@@ -12,3 +12,7 @@ Error message is returned in 'error' key in JSON response if there is any error 
 
 Application contains a dockerfile.
 
+# Technologies Used
+ - Nodejs
+ - Express
+
