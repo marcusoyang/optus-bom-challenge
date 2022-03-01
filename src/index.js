@@ -1,13 +1,10 @@
 const app = require('express')();
 const axios = require('axios');
 
-const URL = "http://www.bom.gov.au/fwo/IDN60801/IDN60801.95765.json";
-const FILTER_TEMP = 20;
-
-const filterStations = (data) => {
+const filterStations = (data, temp) => {
     arr = [];
     data.forEach(station => {
-        if (station["apparent_t"] > FILTER_TEMP) {
+        if (station["apparent_t"] > temp) {
             arr.push({
                 name: station["name"],
                 apparent_t: station["apparent_t"],
@@ -19,21 +16,29 @@ const filterStations = (data) => {
     return arr;
 }
 
-app.get('/', async (req, res ) => {
+const getFilteredResult = async (url, filterTemp) => {
     try {
         // GET request using Axios
-        const response = await axios.get(URL);
-        let highTempStations = filterStations(response.data["observations"]["data"]);
+        const response = await axios.get(url);
+        let highTempStations = filterStations(response.data["observations"]["data"], filterTemp);
         highTempStations.sort((a, b) => parseFloat(a.apparent_t) - parseFloat(b.apparent_t));
-        res.json({ response: highTempStations });
+        return { response: highTempStations };
     } catch (error) {
-        res.json({
+        return {
             errors: [{
                 status: 503,
                 error: error["message"]
             }]
-        });
+        };
     }
+}
+
+app.get('/', (req, res ) => {
+    const filterTemp = 20;
+    const url = "http://www.bom.gov.au/fwo/IDN60801/IDN60801.95765.json";
+    getFilteredResult(url, filterTemp).then(result => {  
+        res.json(result);
+    })
 });
 
 const port = process.env.PORT || 8080;
