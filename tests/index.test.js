@@ -1,4 +1,5 @@
 const filterStations = require("../src/index");
+const getFilteredResult = require("../src/index");
 
 describe("Filter stations function", () => {
     it("filters out apparent_t lower than 20", () => {
