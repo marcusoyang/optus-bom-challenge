@@ -15,3 +15,4 @@ Each JSON element contains:
  - Jest
  - Docker
 
+Deployed on Heroku: https://optus-bom-challenge.herokuapp.com/
