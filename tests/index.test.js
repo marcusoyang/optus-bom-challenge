@@ -16,7 +16,7 @@ describe("Filter stations function", () => {
                 "lon": 1
             }
         ]
-        expect(filterStations(data)).toStrictEqual([{
+        expect(filterStations(data, 20)).toStrictEqual([{
             "name": "apparent_t over 20",
             "apparent_t": 20.5,
             "lat": 1,
@@ -50,11 +50,15 @@ describe("Filter stations function", () => {
                 "lon": 1
             }
         ]
-        expect(filterStations(data)).toStrictEqual([{
+        expect(filterStations(data, 20)).toStrictEqual([{
             "name": "apparent_t over 20",
             "apparent_t": 20.5,
             "lat": 1,
             "long": 1
         }])
-    })
-})
+    });
+    it("receives empty JSON", () => {
+        const data = []
+        expect(filterStations(data, 20)).toStrictEqual([])
+    });
+});
